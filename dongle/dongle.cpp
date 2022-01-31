@@ -257,6 +257,8 @@ void Dongle::handleBulkData(const Bytes &data)
     {
         const RxInfoCommand *info = data.toStruct<RxInfoCommand>();
 
+        Log::error("Received event: 0x%x", info->eventType);
+
         switch (info->eventType)
         {
             case EVT_BUTTON_PRESS:
@@ -269,7 +271,6 @@ void Dongle::handleBulkData(const Bytes &data)
                 break;
 
             case EVT_CLIENT_LOST:
-                Log::error("Client lost");
                 // Packet is guaranteed not to be empty
                 #if IS_PROP_ENABLED(EMPTY_PACKET_DISCONNECT)
                 handleControllerDisconnect(packet[0]);
